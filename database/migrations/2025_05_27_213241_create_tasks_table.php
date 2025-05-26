@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->enum('status', ['pending', 'in_progress', 'done']);
             $table->enum('priority', ['low', 'medium', 'high']);
-            $table->date('date');
+            $table->date('due_date');
             $table->foreignId('project_id')->constrained('projects');
             $table->timestamps();
         });
