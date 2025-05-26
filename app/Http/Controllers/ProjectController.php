@@ -95,7 +95,7 @@ class ProjectController extends Controller
             'data' => $project
         ]);
     }
-    
+
     /**
      * @OA\Get(
      *     path="/api/projects/{id}",
