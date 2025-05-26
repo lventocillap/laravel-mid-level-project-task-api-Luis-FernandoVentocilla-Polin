@@ -21,13 +21,14 @@ class UpdateTaskProjectRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
             'title' => 'required|string',
             'description' => 'sometimes|string|min:3|max:100',
             'status' => 'required|string|in:pending,in_progress,done',
             'priority' => 'required|string|in:low,medium,high',
-            'due_date' => 'requried|date',
-            'project_id' => 'requried|integer|exists:project,id'
+            'due_date' => 'required|date',
+            'project_id' => 'required|integer|exists:projects,id'
         ];
     }
 }
