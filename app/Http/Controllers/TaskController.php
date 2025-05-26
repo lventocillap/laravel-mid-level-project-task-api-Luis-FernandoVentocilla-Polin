@@ -11,9 +11,7 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request): JsonResponse
     {
         $status = $request->query('status');
@@ -38,9 +36,7 @@ class TaskController extends Controller
             'data' => $tasks
         ]);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreTaskProjectRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -50,9 +46,7 @@ class TaskController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         $task = Task::find($id);
@@ -65,9 +59,7 @@ class TaskController extends Controller
             'data' => $task
         ]);
     }
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(UpdateTaskProjectRequest $request, int $id)
     {
         $validated = $request->validated();
@@ -83,9 +75,6 @@ class TaskController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(int $id)
     {
         $task = Task::find($id);

@@ -11,13 +11,29 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+
     /**
-     * @SWG\Get(
-     *     path="/projects",
-     *     summary="Listar los projectos",
-     *     tags={"Users"},
-     *     @SWG\Response(response=200, description="Successful operation"),
-     *     @SWG\Response(response=400, description="Invalid request")
+     * @OA\Get(
+     *     path="/api/projects",
+     *     summary="Obtener un listado de projectos",
+     *     description="Devuelve un listado de projectos con sus tareas relacionadas",
+     *     tags={"Projects"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Projectos encontrados",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="proyecto nuevo"),
+     *                 @OA\Property(property="description", type="string", example="proyecto nuevo"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Testimonio no encontrado"
+     *     )
      * )
      */
     public function index(Request $request): JsonResponse
@@ -37,7 +53,39 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/projects",
+     *     summary="Registrar un projecto",
+     *     tags={"Projects"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "description", "status"},
+     *             @OA\Property(property="name", type="string", example="Projecto nuevo"),
+     *             @OA\Property(property="description", type="string", example="Descripcion del proyecto"),
+     *             @OA\Property(property="status", type="string", example="active"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Projecto registrado correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Testimonio registrado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Error de validación"),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 example={"name_customer": {"El nombre del cliente es obligatorio"}}
+     *             )
+     *         )
+     *     )
+     * )
      */
     public function store(StoreProjectRequest $request): JsonResponse
     {
@@ -47,9 +95,29 @@ class ProjectController extends Controller
             'data' => $project
         ]);
     }
-
+    
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/projects/{id}",
+     *     summary="Obtener un projecto por id",
+     *     description="Devuelve un prjecto de projectos con sus tareas relacionadas",
+     *     tags={"Projects"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Projecto encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="proyecto nuevo"),
+     *                 @OA\Property(property="description", type="string", example="proyecto nuevo"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Testimonio no encontrado"
+     *     )
+     * )
      */
     public function show(int $id): JsonResponse
     {
@@ -65,7 +133,34 @@ class ProjectController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/projects/{id}",
+     *     summary="Actualizar un projecto",
+     *     tags={"Projects"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "description", "status"},
+     *             @OA\Property(property="name", type="string", example="Projecto nuevo"),
+     *             @OA\Property(property="description", type="string", example="Descripcion del proyecto"),
+     *             @OA\Property(property="status", type="string", example="active"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Projecto registrado correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Testimonio registrado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Projecto no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Projecto no encontrado")
+     *         )
+     *     )
+     * )
      */
     public function update(UpdateProjectProjectRequest $request, string $id)
     {
@@ -82,8 +177,35 @@ class ProjectController extends Controller
         ]);
     }
 
+
+
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/projects/{id}",
+     *     summary="Eliminar un projecto",
+     *     tags={"Projects"},
+     *     @OA\Parameter(
+     *         name="projectId",
+     *         in="path",
+     *         required=true,
+     *         description="ID deL projecto",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Projecto eliminado correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Projecto eliminado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Projecto no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Projecto no encontrado")
+     *         )
+     *     )
+     * )
      */
     public function destroy(int $id)
     {
